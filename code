@@ -1,0 +1,48 @@
+template<typename T>
+void __merge(T arr[],int l,int mid,int r){
+    T* aux=new T[r-l+1];
+    for(int i=l;i<=r;i++)
+        aux[i-l]=arr[i];
+
+    int i=l,j=mid+1;
+    for(int k=l;k<=r;k++){
+        if(i>mid){
+            arr[k]=aux[j-l];
+            j++;
+        }else if(j>r){
+            arr[k]=aux[i-l];
+            i++;
+        }
+        else if(aux[i-l]<aux[j-l]){
+            arr[k]=aux[i-l];
+            i++;
+        }else{
+            arr[k]=aux[j-l];
+            j++;
+        }
+    }
+    delete[] aux;
+}
+
+template<typename T>
+void __mergeSort(T arr[],int l,int r){
+    /*
+     * if(r-l<=15)
+     *  insertion(arr,l,r);
+     * return;
+     */
+    if(l>=r)//此处可以优化，可以采用插入排序，当数据量很小时，采用插入排序。
+        return;
+    int mid=(l+r)/2; //l+(r-l)/2
+    __mergeSort(arr,0,mid);
+    __mergeSort(arr,mid+1,r);
+    if(arr[mid]>arr[mid+1])//此处也是一个优化
+        __merge(arr,l,mid,r);
+
+
+}
+
+template<typename T>
+void mergeSort(T arr[],int n){
+    __mergeSort(arr,0,n-1);
+}
